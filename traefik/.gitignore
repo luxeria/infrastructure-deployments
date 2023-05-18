@@ -1,0 +1,3 @@
+/conf.d/internal-allowlist.yaml
+/htpasswd
+/acme/

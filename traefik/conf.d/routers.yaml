@@ -1,0 +1,8 @@
+http:
+  routers:
+    api:
+      # only expose api on internal entrypoint
+      entryPoints:
+        - "internal"
+      rule: "PathPrefix(`/api`, `/dashboard`)"
+      service: "api@internal"

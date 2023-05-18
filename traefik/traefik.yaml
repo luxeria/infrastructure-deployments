@@ -1,0 +1,36 @@
+accessLog: {}
+api: {}
+
+certificatesResolvers:
+   letsencrypt:
+     acme:
+       email: lux@esheep.ch
+       storage: /etc/traefik/acme/letsencrypt.json
+       tlsChallenge: {}
+
+entryPoints:
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certResolver: letsencrypt
+  video:
+    address: ':10000/udp'
+    udp:
+      timeout: 10s
+  internal:
+    address: ":8080"
+    http:
+      middlewares:
+        - "internal-allowlist@file"
+
+log:
+  level: INFO
+
+providers:
+  docker:
+    exposedByDefault: false
+    endpoint: "unix:///var/run/docker.sock"
+    network: traefik
+  file:
+    directory: /etc/traefik/conf.d

@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  router:
+    image: traefik:v2.10
+    restart: unless-stopped
+    ports:
+      # websecure entry point
+      - "443:443"
+      # video entry point for Jitsi
+      - "10000:10000/udp"
+      # internal entry point
+      - "8080:8080"
+    volumes:
+      - ./acme:/etc/traefik/acme:z
+      - ./conf.d:/etc/traefik/conf.d:z
+      - ./htpasswd:/etc/traefik/htpasswd:ro,z
+      - ./traefik.yaml:/etc/traefik/traefik.yaml:ro,z
+      - /var/run/docker.sock:/var/run/docker.sock:ro,z
+networks:
+  # Needs to be created manually with:
+  #   docker network create --subnet=172.19.0.0/16 traefik
+  default:
+    external: true
+    name: traefik
