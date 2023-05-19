@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  dokuwiki:
+    image: php:8-apache
+    restart: unless-stopped
+    expose:
+      - "80"
+    volumes:
+      - ./html:/var/www/html/:z
+      - ./dokuwiki_setup.sh:/usr/local/bin/dokuwiki_setup.sh:ro,z
+    environment:
+      # This needs to match the owner of the files in ./html
+      - DOKUWIKI_UID=1000
+      - DOKUWIKI_GID=1000
+      # Sets apache2 ServerName
+      - DOKUWIKI_SERVER_NAME=wiki.luxeria.ch
+    command: dokuwiki_setup.sh
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.dokuwiki.rule=Host(`wiki.luxeria.ch`)"
+        - "traefik.http.services.dokuwiki.loadbalancer.server.port=80"
+networks:
+  default:
+    external: true
+    name: traefik
