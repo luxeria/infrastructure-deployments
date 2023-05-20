@@ -19,7 +19,7 @@ This deployment is based on
 the following modifications:
 
   - Removed `*_PASSWORD` environment variables from `environment` section and
-    moved them from `.env` to `.secrets` env-file.
+    moved them from `.env` to `secrets.env` env-file.
   - No port-forwarding to host, i.e. all `ports` sections have been replaced
     with `expose`. This ensures no ports are opened on the host. All ports are
     still reachable via the container's IP address though.
