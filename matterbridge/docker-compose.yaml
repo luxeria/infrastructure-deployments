@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  matterbridge:
+    image: 42wim/matterbridge:stable
+    restart: unless-stopped
+    volumes:
+      - ./matterbridge.toml:/etc/matterbridge/matterbridge.toml:ro,z
+      - ./media:/media:z
+  media:
+    image: "nginx"
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/templates/default.conf.template:ro,z
+      - ./media:/usr/share/nginx/html:ro,z
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.matterbridge-media.rule=Host(`telegram.luxeria.ch`)"
+      - "traefik.http.services.matterbridge-media.loadbalancer.server.port=80"
+networks:
+  default:
+    external: true
+    name: traefik
