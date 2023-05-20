@@ -5,19 +5,24 @@ services:
     image: 42wim/matterbridge:stable
     restart: unless-stopped
     volumes:
-      - ./matterbridge.toml:/etc/matterbridge/matterbridge.toml:ro,z
-      - ./media:/media:z
+      - /var/data/Volumes/matterbridge/matterbridge.toml:/etc/matterbridge/matterbridge.toml:ro,z
+      - /var/data/Volumes/matterbridge/media:/media:z
+    networks:
+      - matterbridge
   media:
     image: "nginx"
     restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/templates/default.conf.template:ro,z
-      - ./media:/usr/share/nginx/html:ro,z
+      - /var/data/Volumes/matterbridge/media:/usr/share/nginx/html:ro,z
+    networks:
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.matterbridge-media.rule=Host(`telegram.luxeria.ch`)"
       - "traefik.http.services.matterbridge-media.loadbalancer.server.port=80"
 networks:
-  default:
+  matterbridge:
+  traefik:
     external: true
     name: traefik

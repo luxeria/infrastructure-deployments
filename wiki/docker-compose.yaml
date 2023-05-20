@@ -7,7 +7,7 @@ services:
     expose:
       - "80"
     volumes:
-      - ./html:/var/www/html/:z
+      - /var/data/Volumes/wiki/html:/var/www/html/:z
       - ./dokuwiki_setup.sh:/usr/local/bin/dokuwiki_setup.sh:ro,z
     environment:
       # This needs to match the owner of the files in ./html

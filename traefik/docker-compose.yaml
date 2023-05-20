@@ -12,10 +12,11 @@ services:
       # internal entry point
       - "8080:8080"
     volumes:
-      - ./acme:/etc/traefik/acme:z
       - ./conf.d:/etc/traefik/conf.d:z
-      - ./htpasswd:/etc/traefik/htpasswd:ro,z
       - ./traefik.yaml:/etc/traefik/traefik.yaml:ro,z
+      - /var/data/Volumes/traefik/internal-allowlist.yaml:/etc/traefik/conf.d/internal-allowlist.yaml:ro,z
+      - /var/data/Volumes/traefik/acme:/etc/traefik/acme:z
+      - /var/data/Volumes/traefik/htpasswd:/etc/traefik/htpasswd:ro,z
       - /var/run/docker.sock:/var/run/docker.sock:ro,z
 networks:
   # Needs to be created manually with:
