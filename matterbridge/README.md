@@ -22,3 +22,16 @@ to `/media` via Traefik on `telegram.luxeria.ch`. It is configured via the
 `nginx.conf` which ensures that only media files (i.e. images and videos) are
 shown in the browser, while all other files (e.g. HTML, JS etc) can only be
 downloaded, but not rendered or executed in a browser.
+
+## Upgrading Matterbridge and nginx
+
+The deployment uses a floating tag for both containers, which always points
+to the latest stable versions. This mean that whenever the container
+images are re-pulled, that it will upgrade both Matterbridge and nginx.
+
+To pull in new image versions, run:
+
+```console
+$ docker compose pull
+$ docker compose down && docker compose up -d
+```
