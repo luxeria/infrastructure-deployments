@@ -9,15 +9,19 @@ certificatesResolvers:
        tlsChallenge: {}
 
 entryPoints:
+  # Default HTTPS entry point. Exposed to the Internet.
   websecure:
     address: ":443"
     http:
       tls:
         certResolver: letsencrypt
+  # UDP entry point used for Jitsi. Exposed to the Internet.
   video:
     address: ':10000/udp'
     udp:
       timeout: 10s
+  # Internal HTTP entry point. Only exposed on the internal LAN,
+  # only allows access from internal source IPs.
   internal:
     address: ":8080"
     http:
@@ -28,9 +32,10 @@ log:
   level: INFO
 
 providers:
+  # Docker API access via dockerapi container
   docker:
     exposedByDefault: false
-    endpoint: "unix:///var/run/docker.sock"
+    endpoint: "tcp://dockerapi:2375"
     network: traefik
   file:
     directory: /etc/traefik/conf.d

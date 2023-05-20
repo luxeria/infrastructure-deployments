@@ -17,10 +17,28 @@ services:
       - /var/data/Volumes/traefik/internal-allowlist.yaml:/etc/traefik/conf.d/internal-allowlist.yaml:ro,z
       - /var/data/Volumes/traefik/acme:/etc/traefik/acme:z
       - /var/data/Volumes/traefik/htpasswd:/etc/traefik/htpasswd:ro,z
+    networks:
+      - traefik
+      - dockerapi
+  dockerapi:
+    image: ghcr.io/tecnativa/docker-socket-proxy
+    restart: unless-stopped
+    expose:
+      - "2375"
+    environment:
+      - CONTAINERS=1
+      - NETWORKS=1
+      - SERVICES=1
+      - TASKS=1
+    volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro,z
+    networks:
+      - dockerapi
 networks:
   # Needs to be created manually with:
   #   docker network create --subnet=172.19.0.0/16 traefik
-  default:
+  traefik:
     external: true
     name: traefik
+  # For Docker API access
+  dockerapi:
