@@ -35,7 +35,7 @@ services:
     healthcheck:
       # Workaround for https://github.com/Tecnativa/docker-socket-proxy/issues/21
       #
-      # While this health check does _not_ actually test the if persistent
+      # While this health check does _not_ actually test if the persistent
       # connection between Treafik and HAProxy is still alive, it still works
       # because this health check causes an event in `docker event -f type=container`.
       # This in turn causes the persistent connection between Traefik and HAProxy
