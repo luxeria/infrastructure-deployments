@@ -12,11 +12,11 @@ services:
       # internal entry point
       - "8080:8080"
     volumes:
-      - ./conf.d:/etc/traefik/conf.d:z
+      - ./conf.d:/etc/traefik/conf.d:z # rw for internal-allowlist.yaml
       - ./traefik.yaml:/etc/traefik/traefik.yaml:ro,z
-      - /var/data/Volumes/traefik/internal-allowlist.yaml:/etc/traefik/conf.d/internal-allowlist.yaml:ro,z
-      - /var/data/Volumes/traefik/acme:/etc/traefik/acme:z
-      - /var/data/Volumes/traefik/htpasswd:/etc/traefik/htpasswd:ro,z
+      - ${LUX_VOLUMES:?}/traefik/internal-allowlist.yaml:/etc/traefik/conf.d/internal-allowlist.yaml:ro,z
+      - ${LUX_VOLUMES:?}/traefik/acme:/etc/traefik/acme:z
+      - ${LUX_VOLUMES:?}/traefik/htpasswd:/etc/traefik/htpasswd:ro,z
     networks:
       - traefik
       - dockerapi

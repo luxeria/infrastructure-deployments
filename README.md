@@ -1,9 +1,30 @@
 # LuXeria Infrastructure Docker Compose Files
 
-All deployments are found in `/var/data/Deployments`. We store the corresponding
-volumes (i.e. everything which should not be part of this git tree) in a
-separate path under `/var/data/Volumes`, to allow for easy backup and inspection
-than `docker volume` mounts.
+This repository contains the [Docker Compose](https://docs.docker.com/compose/)
+deployments used in our infrastructure.
+All deployments are found in `/var/data/Deployments`.
+
+## Host-mounted Volumes
+
+When specifying the host part of a `volumes` section, please use one of the
+following two patterns:
+
+ - `./config:/var/app/config:ro`: For read-only configuration files which can be
+   committed to git. They will be stored in the same directory as the
+   `docker-compose.yaml` file.
+ - `${LUX_VOLUMES:?}/data:/var/app/data`: For application data that the
+   container may write to, and for sensitive configuration (e.g. credentials).
+   Those will be stored in a separate directory outside the git tree.
+
+On our server, the `LUX_VOLUMES` environment is set to `/var/data/Volumes` in
+`/etc/environment` (for user sessions) and in the systemd service file below
+(for systemd). For local testing, you may set it to a different directory.
+
+The `:?` part of `${LUX_VOLUMES:?}` will make `docker compose` commands error
+out if the variable is not set.
+
+Please do not use [Docker external named volumes](https://docs.docker.com/storage/volumes/),
+as they are harder to inspect, backup and transfer between hosts.
 
 ## Managing services via systemd
 
@@ -32,6 +53,7 @@ After=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=true
+Environment=LUX_VOLUMES=/var/data/Volumes
 WorkingDirectory=/var/data/Deployments/%i
 ExecStart=/usr/bin/docker compose up -d --remove-orphans
 ExecStop=/usr/bin/docker compose down

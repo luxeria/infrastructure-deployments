@@ -5,8 +5,8 @@ services:
     image: 42wim/matterbridge:stable
     restart: unless-stopped
     volumes:
-      - /var/data/Volumes/matterbridge/matterbridge.toml:/etc/matterbridge/matterbridge.toml:ro,z
-      - /var/data/Volumes/matterbridge/media:/media:z
+      - ${LUX_VOLUMES:?}/matterbridge/matterbridge.toml:/etc/matterbridge/matterbridge.toml:ro,z
+      - ${LUX_VOLUMES:?}/matterbridge/media:/media:z
     networks:
       - matterbridge
   media:
@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/templates/default.conf.template:ro,z
-      - /var/data/Volumes/matterbridge/media:/usr/share/nginx/html:ro,z
+      - ${LUX_VOLUMES:?}/matterbridge/media:/usr/share/nginx/html:ro,z
     networks:
       - traefik
     labels:

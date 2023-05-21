@@ -2,7 +2,7 @@
 
 ## Configuration
 
-Check out the (hidden) `.env` and `.secrets` file.
+Check out the (hidden) `.env` and `${LUX_VOLUMES:?}/jitsi/secrets.env` file.
 
 ## Upgrade Guide
 
