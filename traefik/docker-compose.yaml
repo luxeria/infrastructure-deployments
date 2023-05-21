@@ -32,6 +32,17 @@ services:
       - TASKS=1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro,z
+    healthcheck:
+      # Workaround for https://github.com/Tecnativa/docker-socket-proxy/issues/21
+      #
+      # While this health check does _not_ actually test the if persistent
+      # connection between Treafik and HAProxy is still alive, it still works
+      # because this health check causes an event in `docker event -f type=container`.
+      # This in turn causes the persistent connection between Traefik and HAProxy
+      # to receive at least one container event every 5 minutes, therefore
+      # not triggering the default 10 minute idle timeout of HAProxy.
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:2375/_ping"]
+      interval: 10s
     networks:
       - dockerapi
 networks:
