@@ -42,7 +42,7 @@ services:
       # to receive at least one container event every 5 minutes, therefore
       # not triggering the default 10 minute idle timeout of HAProxy.
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:2375/_ping"]
-      interval: 10s
+      interval: 5m
     networks:
       - dockerapi
 networks:
