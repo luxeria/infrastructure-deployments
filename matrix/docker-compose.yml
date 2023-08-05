@@ -1,0 +1,66 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14
+    container_name: matrix-db
+    restart: unless-stopped
+    networks:
+      - default
+    volumes:
+     - ./postgresdata:/var/lib/postgresql/data
+    environment:
+     - POSTGRES_DB=synapse
+     - POSTGRES_USER=lux
+     - POSTGRES_PASSWORD=3tL!x!C#v7n6ccWB
+     - POSTGRES_INITDB_ARGS= --encoding='UTF8' --lc-collate='C' --lc-ctype='C'
+
+  element:
+    image: vectorim/element-web:latest
+    container_name: matrix-element
+    restart: unless-stopped
+    volumes:
+      - ./element-config.json:/app/config.json
+    networks:
+      - default
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.element.entrypoints=http"
+      - "traefik.http.routers.element.rule=Host(`element.luxeria.ch`)"
+      - "traefik.http.middlewares.element-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.element.middlewares=element-https-redirect"
+      - "traefik.http.routers.element-secure.entrypoints=https"
+      - "traefik.http.routers.element-secure.rule=Host(`element.luxeria.ch`)"
+      - "traefik.http.routers.element-secure.tls=true"
+      - "traefik.http.routers.element-secure.tls.certresolver=http"
+      - "traefik.http.routers.element-secure.service=element"
+      - "traefik.http.services.element.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.element-secure.middlewares=secHeaders@file"
+        
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix-synapse
+    restart: unless-stopped
+    networks:
+      - default
+      - proxy
+    volumes:
+     - ./synapse:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.synapse.entrypoints=http"
+      - "traefik.http.routers.synapse.rule=Host(`matrix.luxeria.ch`)"   # Hier eure URL eingeben #
+      - "traefik.http.middlewares.synapse-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.synapse.middlewares=synapse-https-redirect"
+      - "traefik.http.routers.synapse-secure.entrypoints=https"
+      - "traefik.http.routers.synapse-secure.rule=Host(`matrix.luxeria.ch`)"    # Hier eure URL eingeben #
+      - "traefik.http.routers.synapse-secure.tls=true"
+      - "traefik.http.routers.synapse-secure.tls.certresolver=http"
+      - "traefik.http.routers.synapse-secure.service=synapse"
+      - "traefik.http.services.synapse.loadbalancer.server.port=8008"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.synapse-secure.middlewares=secHeaders@file"
+networks:
+  proxy:
+    external: true
