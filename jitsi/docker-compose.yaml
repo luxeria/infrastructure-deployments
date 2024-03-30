@@ -390,6 +390,7 @@ services:
     # Custom branding
     branding:
         image: "nginx"
+        restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ./branding:/usr/share/nginx/html:ro,z
         labels:
