@@ -1,0 +1,66 @@
+<style>
+  dialog#lux_rules {
+    max-width: 800px;
+    border-radius: 8px;
+    border-color: #131519;
+  }
+
+  div#lux_rules_content {
+    padding: 24px;
+    color: #253858;
+    font-size: 16px;
+  }
+
+  div#lux_rules_content p {
+    margin-top: 10px;
+  }
+
+  div#lux_rules_content h2 {
+    color: #253858;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  button#lux_rules_btn {
+    margin: 0 auto;
+    font-size: 18px;
+    padding: 12px 24px;
+  }
+</style>
+
+<dialog id="lux_rules">
+  <div id="lux_rules_content">
+    <h2>Regeln für den Luxeria Jitsi Server</h2>
+
+    <ul>
+      <li>Zeige Einfühlungsvermögen und Freundlichkeit gegenüber anderen Menschen.</li>
+      <li>Respektiere unterschiedliche Meinungen, Standpunkte und Erfahrungen.</li>
+      <li>Lege genügend Redepausen ein um auch andere ans Wort kommen zu lassen.</li>
+      <li>Verwende keine sexualisierte oder diskriminierende Sprache, Bilder oder Symbolik.</li>
+      <li>Respektiere die Privatsphäre und Grenzen der anderen Teilnehmenden.</li>
+      <li>Schalte dich stumm bei Redepausen und trage angemessene Kleidung.</li>
+      <li>Unterlasse beleidigende oder abwertende Kommentare, persönliche oder
+        politische Angriffe, Trollen und Belästigungen.</li>
+    </ul>
+
+    <p>Die vollständigen Regeln findest du <a href="https://luxeria.ch/jitsi/rules/">auf unserer Webseite</a>.
+      Bei Problemen oder Fragen melde dich bitte beim Vorstand oder dem Moderationsteam.</p>
+  </div>
+  <form method="dialog">
+    <button id="lux_rules_btn" autofocus>Verstanden</button>
+  </form>
+</dialog>
+<script>
+
+  const hasLuxRulesCookie = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("lux_rules="));
+
+  if (!hasLuxRulesCookie) {
+    document.getElementById("lux_rules_btn").addEventListener("click", () => {
+      document.cookie = `lux_rules=1; Max-Age=${25 * 86400}; Secure`;
+    });
+    document.getElementById("lux_rules").showModal();
+  }
+
+</script>
