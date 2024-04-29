@@ -16,6 +16,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.jitsi.rule=Host(`${TRAEFIK_HOST}`)"
             - "traefik.http.services.jitsi.loadbalancer.server.port=80"
+            - "com.centurylinklabs.watchtower.depends-on=jvb"
         env_file:
             - ${LUX_VOLUMES:?}/jitsi/secrets.env
         environment:
@@ -329,6 +330,8 @@ services:
             - '8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
+        labels:
+            - "com.centurylinklabs.watchtower.depends-on=prosody"
         env_file:
             - ${LUX_VOLUMES:?}/jitsi/secrets.env
         environment:
@@ -420,6 +423,7 @@ services:
             - "traefik.enable=true"
             - "traefik.udp.routers.jitsi-jvb.entrypoints=video"
             - "traefik.udp.services.jitsi-jvb.loadbalancer.server.port=10000"
+            - "com.centurylinklabs.watchtower.depends-on=prosody"
         env_file:
             - ${LUX_VOLUMES:?}/jitsi/secrets.env
         environment:
