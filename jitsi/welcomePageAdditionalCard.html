@@ -23,7 +23,7 @@
         }
 
         .welcome #lux-meet-stats {
-            display: none;
+            visibility: hidden;
         }
     </style>
 
@@ -60,7 +60,7 @@
                     if (roomStats.participants != 0) {
                         participants.textContent = roomStats.participants;
                     }
-                    stats.style.display = "block";
+                    stats.style.visibility = "visible";
                 }
             })
             .catch((e) => console.error(`Failed to access peephole service`, e));
