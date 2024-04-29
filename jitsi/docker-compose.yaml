@@ -497,6 +497,29 @@ services:
         networks:
             traefik:
 
+    # Luxeria Peephole Service
+    peephole:
+        image: "ghcr.io/luxeria/jitsi-peephole-service:latest"
+        restart: ${RESTART_POLICY:-unless-stopped}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.jitsi-peephole.rule=Host(`${TRAEFIK_HOST}`) && PathPrefix(`/peephole`)"
+            - "traefik.http.services.jitsi-peephole.loadbalancer.server.port=9339"
+            - "com.centurylinklabs.watchtower.depends-on=prosody"
+        expose:
+            - '9339'
+        environment:
+            - PEEPHOLE_ROOM_NAME
+            - PROSODY_HTTP_PORT
+            - XMPP_SERVER
+        networks:
+            jitsi:
+                aliases:
+                    - "meet.jitsi"
+            traefik:
+        depends_on:
+            - prosody
+
 # Custom network so all services can communicate using a FQDN
 networks:
     jitsi:
