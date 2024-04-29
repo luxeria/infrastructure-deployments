@@ -12,6 +12,8 @@ services:
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
             - ./luxrules.html:/usr/share/jitsi-meet/body.html:Z
+            - ./custom-interface_config.js:/config/custom-interface_config.js:Z
+            - ./welcomePageAdditionalCard.html:/usr/share/jitsi-meet/static/welcomePageAdditionalCard.html:Z
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.jitsi.rule=Host(`${TRAEFIK_HOST}`)"

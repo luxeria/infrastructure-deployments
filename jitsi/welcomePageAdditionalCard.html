@@ -1,0 +1,69 @@
+<template id="welcome-page-additional-card-template">
+    <style>
+        .welcome .welcome-card-text {
+            text-align: center;
+        }
+
+        .welcome .welcome-card-button {
+            background: #fff;
+            color: #36373a;
+            margin: 12px auto;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .welcome .welcome-card-link {
+            text-decoration: none;
+        }
+
+        .welcome .welcome-card-paragraph {
+            color: #fff;
+            font-size: larger;
+            line-height: 24px;
+        }
+
+        .welcome #lux-meet-stats {
+            display: none;
+        }
+    </style>
+
+    <div class="welcome-card-text">
+        <p class="welcome-card-paragraph">Das wöchentliche Treffen findet jeden Mittwoch ab ca. 20:00 Uhr in folgenden
+            Raum statt:
+        </p>
+
+        <a href="/LuxeriaTreffen" class="welcome-card-link">
+            <button aria-disabled="false" aria-label="LuxeriaTreffen" class="welcome-page-button welcome-card-button"
+                type="button">LuxeriaTreffen</button>
+        </a>
+
+        <p id="lux-meet-stats">
+            Zur Zeit befinden sich <span id="lux-meet-participants">keine</span> Teilnehmende im Raum.
+        </p>
+    </div>
+
+    <script>
+        fetch("https://meet.luxeria.ch/peephole")
+            .then((response) => {
+                if (!response.ok) {
+                    console.error(`Peephole service returned an error: ${response.statusText}`);
+                    return
+                }
+
+                return response.json();
+            })
+            .then((roomStats) => {
+                const participants = document.getElementById("lux-meet-participants");
+                const stats = document.getElementById("lux-meet-stats");
+
+                if (roomStats.hasOwnProperty("participants")) {
+                    if (roomStats.participants != 0) {
+                        participants.textContent = roomStats.participants;
+                    }
+                    stats.style.display = "block";
+                }
+            })
+            .catch((e) => console.error(`Failed to access peephole service`, e));
+
+    </script>
+</template>

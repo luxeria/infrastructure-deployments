@@ -1,0 +1,1 @@
+interfaceConfig.DISPLAY_WELCOME_PAGE_ADDITIONAL_CARD=true;
