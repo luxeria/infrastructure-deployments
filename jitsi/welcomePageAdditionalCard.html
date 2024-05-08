@@ -58,7 +58,11 @@
 
                 if (roomStats.hasOwnProperty("participants")) {
                     if (roomStats.participants != 0) {
-                        participants.textContent = roomStats.participants;
+                        var num = roomStats.participants.toString();
+                        if (roomStats.participants < 3) {
+                            num = "1-3"
+                        }
+                        participants.textContent = num;
                     }
                     stats.style.visibility = "visible";
                 }
