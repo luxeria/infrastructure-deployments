@@ -536,10 +536,10 @@ services:
         env_file:
             - ${LUX_VOLUMES:?}/jitsi/secrets.env
         environment:
-            - JWT_SECRET=${JWT_APP_SECRET}
-            - JWT_ISSUER=${JWT_APP_ID}
             - COOKIE_NAME=lux_meet_jwt
-            - JITSI_URL=${PUBLIC_URL}
+            - JWT_APP_SECRET
+            - JWT_APP_ID
+            - PUBLIC_URL
         networks:
             jitsi:
                 aliases:
