@@ -536,10 +536,10 @@ services:
         volumes:
             - ${LUX_VOLUMES:?}/jitsi/mods.htpasswd:/mods.htpasswd:ro,Z
         environment:
-            - JWT_SECRET="${JWT_APP_SECRET}"
-            - JWT_ISSUER="${JWT_APP_ID}"
+            - JWT_SECRET=${JWT_APP_SECRET}
+            - JWT_ISSUER=${JWT_APP_ID}
             - COOKIE_NAME=lux_meet_jwt
-            - JITSI_URL="${PUBLIC_URL}"
+            - JITSI_URL=${PUBLIC_URL}
         networks:
             jitsi:
                 aliases:
