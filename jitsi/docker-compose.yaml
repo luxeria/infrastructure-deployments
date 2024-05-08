@@ -522,6 +522,32 @@ services:
         depends_on:
             - prosody
 
+    # Luxeria Token Service
+    token:
+        image: "ghcr.io/luxeria/jitsi-token-service:latest"
+        restart: ${RESTART_POLICY:-unless-stopped}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.jitsi-token.rule=Host(`${TRAEFIK_HOST}`) && (PathPrefix(`/login`) || PathPrefix(`/autologin`))"
+            - "traefik.http.services.jitsi-token.loadbalancer.server.port=8080"
+            - "com.centurylinklabs.watchtower.depends-on=prosody"
+        expose:
+            - '8080'
+        volumes:
+            - ${LUX_VOLUMES:?}/jitsi/mods.htpasswd:/mods.htpasswd:ro,Z
+        environment:
+            - JWT_SECRET="${JWT_APP_SECRET}"
+            - JWT_ISSUER="${JWT_APP_ID}"
+            - COOKIE_NAME=lux_meet_jwt
+            - JITSI_URL="${PUBLIC_URL}"
+        networks:
+            jitsi:
+                aliases:
+                    - "meet.jitsi"
+            traefik:
+        depends_on:
+            - prosody
+
 # Custom network so all services can communicate using a FQDN
 networks:
     jitsi:
