@@ -535,6 +535,8 @@ services:
             - '8080'
         volumes:
             - ${LUX_VOLUMES:?}/jitsi/mods.htpasswd:/mods.htpasswd:ro,Z
+        env_file:
+            - ${LUX_VOLUMES:?}/jitsi/secrets.env
         environment:
             - JWT_SECRET=${JWT_APP_SECRET}
             - JWT_ISSUER=${JWT_APP_ID}
