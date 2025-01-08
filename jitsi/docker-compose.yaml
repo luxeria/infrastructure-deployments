@@ -18,7 +18,8 @@ services:
             - "traefik.http.services.jitsi.loadbalancer.server.port=80"
             - "com.centurylinklabs.watchtower.depends-on=jvb"
         env_file:
-            - ${LUX_VOLUMES:?}/jitsi/secrets.env
+          - path: ${LUX_VOLUMES:?}/jitsi/secrets.env
+            required: true
         environment:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
@@ -201,7 +202,8 @@ services:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
         env_file:
-            - ${LUX_VOLUMES:?}/jitsi/secrets.env
+          - path: ${LUX_VOLUMES:?}/jitsi/secrets.env
+            required: true
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
@@ -226,18 +228,18 @@ services:
             - GLOBAL_CONFIG
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
+            #- JIBRI_RECORDER_PASSWORD
             - JIBRI_SIP_BREWERY_MUC
             - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
-            - JICOFO_AUTH_PASSWORD
+            #- JIBRI_XMPP_PASSWORD
+            #- JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
             - JIGASI_XMPP_USER
-            - JIGASI_XMPP_PASSWORD
+            #- JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
-            - JVB_AUTH_PASSWORD
+            #- JVB_AUTH_PASSWORD
             - JWT_APP_ID
-            - JWT_APP_SECRET
+            #- JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
             - JWT_ACCEPTED_AUDIENCES
             - JWT_ASAP_KEYSERVER
@@ -333,7 +335,8 @@ services:
         labels:
             - "com.centurylinklabs.watchtower.depends-on=prosody"
         env_file:
-            - ${LUX_VOLUMES:?}/jitsi/secrets.env
+          - path: ${LUX_VOLUMES:?}/jitsi/secrets.env
+            required: true
         environment:
             - AUTH_TYPE
             - BRIDGE_AVG_PARTICIPANT_STRESS
@@ -353,7 +356,7 @@ services:
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_LIFETIME
-            - JICOFO_AUTH_PASSWORD
+            #- JICOFO_AUTH_PASSWORD
             - JICOFO_AUTH_TYPE
             - JICOFO_BRIDGE_REGION_GROUPS
             - JICOFO_ENABLE_AUTH
@@ -425,7 +428,8 @@ services:
             - "traefik.udp.services.jitsi-jvb.loadbalancer.server.port=10000"
             - "com.centurylinklabs.watchtower.depends-on=prosody"
         env_file:
-            - ${LUX_VOLUMES:?}/jitsi/secrets.env
+          - path: ${LUX_VOLUMES:?}/jitsi/secrets.env
+            required: true
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
@@ -443,7 +447,7 @@ services:
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
-            - JVB_AUTH_PASSWORD
+            #- JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_DISABLE_STUN
             - JVB_INSTANCE_ID
@@ -534,10 +538,11 @@ services:
         volumes:
             - ${LUX_VOLUMES:?}/jitsi/mods.htpasswd:/mods.htpasswd:ro,Z
         env_file:
-            - ${LUX_VOLUMES:?}/jitsi/secrets.env
+          - path: ${LUX_VOLUMES:?}/jitsi/secrets.env
+            required: true
         environment:
             - COOKIE_NAME=lux_meet_jwt
-            - JWT_APP_SECRET
+            #- JWT_APP_SECRET
             - JWT_APP_ID
             - PUBLIC_URL
         networks:
