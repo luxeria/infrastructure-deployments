@@ -9,6 +9,7 @@ services:
     environment:
       - LLDAP_LDAP_BASE_DN=dc=luxeria,dc=ch
       - LLDAP_KEY_FILE= # empty
+      - LLDAP_HTTP_URL=https://lldap.luxeria.ch
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.lldap.rule=Host(`lldap.luxeria.ch`)"
