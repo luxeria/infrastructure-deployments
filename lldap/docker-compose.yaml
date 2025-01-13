@@ -8,6 +8,7 @@ services:
       - ${LUX_VOLUMES:?}/lldap/data:/data
     environment:
       - LLDAP_LDAP_BASE_DN=dc=luxeria,dc=ch
+      - LLDAP_KEY_FILE= # empty
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.lldap.rule=Host(`lldap.luxeria.ch`)"
