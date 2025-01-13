@@ -256,7 +256,7 @@ services:
             - LDAP_AUTH_METHOD
             - LDAP_BASE
             - LDAP_BINDDN
-            - LDAP_BINDPW
+            #- LDAP_BINDPW
             - LDAP_FILTER
             - LDAP_VERSION
             - LDAP_TLS_CIPHERS
@@ -320,6 +320,7 @@ services:
             - XMPP_SERVER_S2S_PORT
             - XMPP_SPEAKERSTATS_MODULES
         networks:
+            ldap:
             jitsi:
                 aliases:
                     - ${XMPP_SERVER:-xmpp.meet.jitsi}
@@ -558,4 +559,7 @@ networks:
     jitsi:
     traefik:
         name: traefik
+        external: true
+    ldap:
+        name: ldap
         external: true
