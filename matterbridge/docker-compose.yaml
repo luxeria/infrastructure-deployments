@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   matterbridge:
     image: 42wim/matterbridge:stable
