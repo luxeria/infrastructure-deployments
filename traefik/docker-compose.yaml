@@ -1,6 +1,6 @@
 services:
   router:
-    image: traefik:v2.10
+    image: traefik:v3
     restart: unless-stopped
     ports:
       # websecure entry point
