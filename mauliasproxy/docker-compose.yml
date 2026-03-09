@@ -1,0 +1,20 @@
+services:
+  mauliasproxy:
+    image: dock.mau.dev/tulir/mauliasproxy
+    restart: unless-stopped
+    volumes:
+      - ./config.yaml:/data/config.yaml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mauliasproxy.rule=Host(`matrix.luxeria.ch`)"
+      - "traefik.http.services.mauliasproxy.loadbalancer.server.port=8008"
+    env_file:
+       - path: ${LUX_VOLUMES:?}/mauliasproxy/secrets.env
+         required: true
+    networks:
+      traefik:
+networks:
+    traefik:
+        name: traefik
+        external: true
+

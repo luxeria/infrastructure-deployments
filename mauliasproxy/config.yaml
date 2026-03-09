@@ -1,0 +1,17 @@
+# Homeserver is used to resolve room names
+homeserver_url: https://matrix.org
+# Room alias configuration
+patterns:
+    # Map #foo:luxeria.ch to #luxeria_foo:matrix.org
+    "^#(.+):luxeria.ch$": "#luxeria_$1:matrix.org"
+# Where mauliasproxy is running
+server_well_known: matrix.luxeria.ch:443
+# How long (in seconds) should resolved room IDs and server lists be cached?
+cache_ttl: 3600
+# Port to listen on
+listen: :8008
+# Secret is injected via env file
+server_keys:
+    default:
+        server_name: luxeria.ch
+        signing_key: "env:MAULIAS_SIGNING_KEY"
